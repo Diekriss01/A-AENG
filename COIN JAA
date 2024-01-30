@@ -1,0 +1,52 @@
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define _1BATH_SENSOR_PIN A0
+#define _2BATH_SENSOR_PIN A1
+#define _5BATH_SENSOR_PIN A2
+#define _10BATH_SENSOR_PIN A3
+
+int count_1BATH = 0;
+int count_2BATH = 0;
+int count_5BATH = 0;
+int count_10BATH = 0;
+
+void intro() {
+  lcd.setCursor(2, 0);
+  lcd.print("COIN SORTING");
+  delay(2000);
+  lcd.clear();
+}
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+  intro();
+  lcd.setCursor(0, 0);
+  lcd.print("1  2  5  10THB");
+}
+
+void loop() {
+  lcd.setCursor(0, 1);
+  lcd.print(count_1BATH);
+  lcd.setCursor(3, 1);
+  lcd.print(count_2BATH);
+  lcd.setCursor(7, 1);
+  lcd.print(count_5BATH);
+  lcd.setCursor(11, 1);
+  lcd.print(count_10BATH);
+
+  // Placeholder for sensor logic
+  if (digitalRead(_1BATH_SENSOR_PIN) == LOW) {
+    delay(50);  // Debounce
+    if (digitalRead(_1BATH_SENSOR_PIN) == LOW) {
+      count_1BATH++;
+      delay(500);  // Delay to prevent multiple counts for the same coin
+    }
+  }
+
+  // Similar logic for other denominations
+
+  delay(100);  // Adjust delay as needed
+}
